@@ -1,7 +1,10 @@
 import './App.css';
 import React, {useState} from 'react'
 
-const Laskuri = (props) => {
+//tässä props ensiksi määritelty, ja myöhemmin viittaus props.huomio
+// const Laskuri = (props) => {
+//tässä props otettu vastaan suoraan nimellä ja props. -voidaan jättää myöhemmin kokonaan pois
+const Laskuri = ({huomio}) => {
 
 //komponentin tilan määritys
 const [luku, setLuku] = useState(0)
@@ -14,7 +17,8 @@ const [luku, setLuku] = useState(0)
         <button onClick={() => setLuku(luku - 1)}>-</button>
         <button onClick={() => setLuku(luku => 0)}>C</button>
 
-        <button onClick={props.huomio}>huomio</button>
+        {/* <button onClick={props.huomio}>huomio</button> */}
+        <button onClick={huomio}>huomio</button>
 
     </>
   );

@@ -3,12 +3,14 @@ import React, {useState} from 'react'
 import './App.css';
 import Laskuri from './Laskuri'
 import Viesti from './Viesti'
+import Posts from './Posts'
 
 // function App() {
 const App = () => {
 
 //app komponentin tila
 const [showLaskuri, setShowLaskuri] = useState(false)
+const [showPosts, setShowPosts] = useState(false)
 
 const huomio = () => {
   alert("Huomio.")
@@ -24,8 +26,12 @@ const huomio = () => {
     <div className="App">
       <h1>hellou from react</h1>
 
+      {/* <Posts /> */}      
+      {showPosts && <button onClick={() => setShowPosts(!showPosts)}>Piilota postit</button>}
+      {!showPosts && <button onClick={() => setShowPosts(!showPosts)}>Näytä postit</button>}
+
       {showLaskuri && <Laskuri huomio={huomio} />}
-      {showLaskuri === true ? <Laskuri  /> : <button>näytä</button>}
+      {/* {showLaskuri === true ? <Laskuri  /> : <button>näytä</button>} */}
       {/* jotain häikkää tässä yläpuolella olevassa lauseessa, kts käytännössä erot toiminnassa */}
 
       {showLaskuri && <button onClick={() => setShowLaskuri(!showLaskuri)}>Piilota laskuri</button>}
@@ -33,6 +39,8 @@ const huomio = () => {
       {!showLaskuri && <button onClick={() => setShowLaskuri(!showLaskuri)}>Näytä laskuri</button>}
 
       <Viesti teksti="tervehdys app komponentitsta" />
+
+      {showPosts && <Posts />}
 
     </div>
   );
