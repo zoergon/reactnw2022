@@ -4,6 +4,7 @@ import './App.css';
 import Laskuri from './Laskuri'
 import Viesti from './Viesti'
 import Posts from './Posts'
+import CustomerList from './CustomerList'
 
 // function App() {
 const App = () => {
@@ -25,6 +26,8 @@ const huomio = () => {
   return (
     <div className="App">
       <h1>hellou from react</h1>
+
+      <CustomerList />
 
       {/* <Posts /> */}      
       {showPosts && <button onClick={() => setShowPosts(!showPosts)}>Piilota postit</button>}

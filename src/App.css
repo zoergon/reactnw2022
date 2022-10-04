@@ -13,6 +13,15 @@
   margin-bottom: 2%;
 }
 
+.customerDetails {
+  background-color: powderblue;
+  border-style: solid;
+  width: 85%;
+  margin: auto;
+  margin-bottom: 50px;
+  border-radius: 10px;
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
