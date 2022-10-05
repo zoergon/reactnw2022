@@ -8,4 +8,10 @@ const getAll = () => {
     return request.then(response => response.data)
 }
 
-export default { getAll }
+// uuden asiakkaan lisääminen
+const create = newCustomer => {
+    return axios.post(baseUrl, newCustomer)
+}
+
+
+export default { getAll, create }
