@@ -3,22 +3,22 @@ import React, {useState} from 'react'
 import CustomerService from './services/Customer'
 
 //setLisäystila-props - päästään lähtemään pois lisäyslomakkeelta!
-const CustomerAdd = ({setLisäystila, setIsPositive, setShowMessage, setMessage }) => {
+const CustomerEdit = ({setMuokkaustila, setIsPositive, setShowMessage, setMessage, muokattavaCustomer }) => {
 
 //komponentin tilan määritys
 
-const [newCustomerId, setNewCustomerId] = useState('')
-const [newCompanyName, setNewCompanyName] = useState('')
-const [newContactName, setNewContactName] = useState('')
-const [newContactTitle, setNewContactTitle] = useState('')
+const [newCustomerId, setNewCustomerId] = useState(muokattavaCustomer.customerId)
+const [newCompanyName, setNewCompanyName] = useState(muokattavaCustomer.companyName)
+const [newContactName, setNewContactName] = useState(muokattavaCustomer.contactName)
+const [newContactTitle, setNewContactTitle] = useState(muokattavaCustomer.contactTitle)
 
-const [newCountry, setNewCountry] = useState('')
-const [newAddress, setNewAddress] = useState('')
-const [newCity, setNewCity] = useState('')
+const [newCountry, setNewCountry] = useState(muokattavaCustomer.country)
+const [newAddress, setNewAddress] = useState(muokattavaCustomer.address)
+const [newCity, setNewCity] = useState(muokattavaCustomer.city)
 
-const [newPostalCode, setNewPostalCode] = useState('')
-const [newPhone, setNewPhone] = useState('')
-const [newFax, setNewFax] = useState('')
+const [newPostalCode, setNewPostalCode] = useState(muokattavaCustomer.postalCode)
+const [newPhone, setNewPhone] = useState(muokattavaCustomer.phone)
+const [newFax, setNewFax] = useState(muokattavaCustomer.fax)
 
 // onSubmit tapahtumankäsittelijä-funktio
 const handleSubmit = (event) => {
@@ -26,7 +26,7 @@ const handleSubmit = (event) => {
   event.preventDefault()
   // luodaan customer-olio, joka poimii stateistä datan
   var newCustomer = {
-    customerId: newCustomerId.toUpperCase(),
+    customerId: newCustomerId,
     companyName: newCompanyName,
     contactname: newContactName,
     contactTitle: newContactTitle,
@@ -39,10 +39,10 @@ const handleSubmit = (event) => {
   }
 
   // uuden customerin lisääminen
-  CustomerService.create(newCustomer)
+  CustomerService.update(newCustomer)
   .then(response => {
     if (response.status === 200) {
-      setMessage("Added new Customer: " + newCustomer.companyName)
+      setMessage("Updated new Customer: " + newCustomer.companyName)
       setIsPositive(true)
       setShowMessage(true)
 
@@ -50,7 +50,7 @@ const handleSubmit = (event) => {
         setShowMessage(false)
       }, 5000)
 
-      setLisäystila(false)
+      setMuokkaustila(false)
       // yllä oleva pois jos setTimeoutin kautta määritellään setLisäystila falseksi
     }
   })
@@ -64,21 +64,17 @@ const handleSubmit = (event) => {
     }, 6000)
   })
 
-  // setTimeout(() => {
-  //   setLisäystila(false)
-  // }, 500)
 }
 
 
   return (
-    <div id="addNew">        
-        <h2>Customer add</h2>        
+    <div id="edit">        
+        <h2>Customer edit</h2>        
 
         <form onSubmit={handleSubmit}>
           <div>
             <label>CustomerId: </label>
-              <input type='text' value={newCustomerId} placeholder='ID with 5 capital letters' maxLength="5" minLength="5"
-                  onChange={({target}) => setNewCustomerId(target.value)} required />
+              <input type='text' value={newCustomerId} disabled />
           </div>
           <div>
               <label>CompanyName: </label>
@@ -128,7 +124,7 @@ const handleSubmit = (event) => {
           
           <input type='submit' value='Save' />
 
-          <input type='button' value='Cancel' onClick={() => setLisäystila(false)} />
+          <input type='button' value='Cancel' onClick={() => setMuokkaustila(false)} />
 
         </form>
 
@@ -136,4 +132,4 @@ const handleSubmit = (event) => {
   )
 }
 
-export default CustomerAdd
+export default CustomerEdit
