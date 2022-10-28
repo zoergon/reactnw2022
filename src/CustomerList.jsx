@@ -14,6 +14,7 @@ const [lisäystila, setLisäystila] = useState(false)
 const [muokkaustila, setMuokkaustila] = useState(false)
 const [reload, reloadNow] = useState(false)
 const [muokattavaCustomer, setMuokattavaCustomer] = useState(false)
+const [search, setSearch] = useState("")
 
 useEffect(() => {
   CustomerService.getAll()
@@ -30,15 +31,28 @@ const editCustomer = (customer) =>  {
   setMuokkaustila(true)
 }
 
+//hakukentän funktio
+const handleSearchInputChange = (event) => {
+  setShowCustomers(true)
+  setSearch(event.target.value.toLowerCase())
+}
+
   return (
     <>        
         {/* <h2 onClick={() => setShowCustomers(!showCustomers)}>Customers</h2> */}
         <h1><nobr style={{ cursor: 'pointer'}}
-        onClick={() => setShowCustomers(!showCustomers)}>Customers</nobr>
+        onClick={() => setShowCustomers(!showCustomers)}>Customers</nobr>        
         
         {/* jos lisäystila = false */}
         {!lisäystila && <button className="nappi" onClick={() => setLisäystila(true)}>Add new</button>}
         </h1>
+
+        {/* hakukenttä */}
+        {/* jos !lisäyst && !muokkaust (=false) niin näytetään: */}
+        {/* onChange viittaus omaan hakukentän funktioon yllä */}
+        {!lisäystila && !muokkaustila &&
+          <input placeholder="Search by company name" value={search} onChange={handleSearchInputChange} />
+        }
 
         {lisäystila && <CustomerAdd setLisäystila={setLisäystila}
         setIsPositive={setIsPositive} setMessage={setMessage} setShowMessage={setShowMessage}
@@ -50,12 +64,22 @@ const editCustomer = (customer) =>  {
         />}
 
         {
-            showCustomers && customers && customers.map(c => (
+          // viimeinen && jälkeen se mitä tehdään
+          // kaikki sitä edeltävät ovat ehtoja -ja -ja -ja
+          // ensimmäiset !lisäys && !muokk && - poistavat listauksen näkyvistä alta lisäystilassa
+          // {}-jälkeen hakutoimintoihin liittyvät asiat
+          !lisäystila && !muokkaustila && showCustomers && customers && customers.map(c => 
+            {
+              const lowerCaseName = c.companyName.toLowerCase()
+              if (lowerCaseName.indexOf(search) > -1) {
+                return(
                 <Customer key={c.customerId} customer={c} reloadNow={reloadNow} reload={reload}
                 setIsPositive={setIsPositive} setMessage={setMessage} setShowMessage={setShowMessage}
                 editCustomer={editCustomer}
                 />
             )
+              }
+            }
             )
         }
 
