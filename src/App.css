@@ -2,6 +2,10 @@
   text-align: center;
 }
 
+#userTable {
+  margin: auto;
+}
+
 .neg {
   color: red;
   background: lightgrey;
@@ -59,6 +63,7 @@
   margin-bottom: 50px;
   border-radius: 10px;
   padding-left: 10%;
+  padding-right: 10%;
 }
 
 .App-logo {
