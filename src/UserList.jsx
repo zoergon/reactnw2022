@@ -2,6 +2,7 @@ import './App.css'
 import React, {useState, useEffect} from 'react'
 import UserService from './services/User'
 import UserAdd from './UserAdd'
+import UserEdit from './UserEdit'
 
 const UserList = ({setIsPositive, setShowMessage, setMessage}) => {
 
@@ -28,12 +29,55 @@ const handleSearchInputChange = (event) => {
 }
 
 //edit-funktio
-const editUsers = (user) =>  {
+const editUser = (user) =>  {
   setMuokattavaUser(user)
   setMuokkaustila(true)
 }
 
+//delete-user
+const deleteUser = (user) => {
+  let vastaus = window.confirm(`Remove User ${user.lastName}`)
 
+  if(vastaus === true) {
+      
+  UserService.remove(user.userId)
+  .then(res => {
+      if (res.status === 200) {
+          setMessage(`Succesfully removed user ${user.lastName}`)
+          setIsPositive(true)
+          setShowMessage(true)
+          window.scrollBy(0, -10000) // Scrollaa ylös ruudun
+
+          // Ilmoituksen piilotus
+          setTimeout(() => {
+              setShowMessage(false)
+            }, 5000)
+            reloadNow(!reload)
+      }
+  })
+  .catch(error => {
+      setMessage(error)
+      setIsPositive(false)
+      setShowMessage(true)
+      window.scrollBy(0, -10000) // Scrollaa ylös ruudun
+
+      setTimeout(() => {
+        setShowMessage(false)
+      }, 6000)
+    })
+
+  } // Jos poisto perutaan, annetaan ilmoitus onnistuneesta perumisesta.
+  else {
+      setMessage('Poisto peruttu.')
+          setIsPositive(true)
+          setShowMessage(true)
+          window.scrollBy(0, -10000) // Scrollaa ylös ruudun
+
+          setTimeout(() => {
+              setShowMessage(false)
+            }, 5000)
+  }
+}
 
   return (
     <>  
@@ -50,6 +94,11 @@ const editUsers = (user) =>  {
         {!lisäystila && !muokkaustila &&
           <input placeholder="Search by Last Name" value={search} onChange={handleSearchInputChange} />
         }
+
+        {muokkaustila && <UserEdit setMuokkaustila={setMuokkaustila}
+        setIsPositive={setIsPositive} setMessage={setMessage} setShowMessage={setShowMessage}
+        muokattavaUser={muokattavaUser}
+        />}
 
         {/* jos lisäystila ja muokkaustila == false, niin näytetään taulukko */}
         {!lisäystila && !muokkaustila &&
@@ -68,13 +117,15 @@ const editUsers = (user) =>  {
             {
               const lowerCaseName = u.lastName.toLowerCase()
               if (lowerCaseName.indexOf(search) > -1) {
-                return(
+                return(                  
                     <tr key={u.userId}>
                         <td>{u.firstName}</td>
                         <td>{u.lastName}</td>
                         <td>{u.email}</td>
-                        <td>{u.accesslevelId}</td>
-                    </tr>
+                        <td>{u.accesslevelId}</td>                        
+                        <td><button onClick={() => editUser(u)}>Edit</button></td>
+                        <td><button onClick={() => deleteUser(u)}>Delete</button></td>
+                    </tr>                    
                 )
               }
             }

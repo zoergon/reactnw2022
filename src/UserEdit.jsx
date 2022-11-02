@@ -4,39 +4,36 @@ import UserService from './services/User'
 import md5 from 'md5'
 
 //setLisäystila-props - päästään lähtemään pois lisäyslomakkeelta!
-const UserAdd = ({setLisäystila, setIsPositive, setShowMessage, setMessage }) => {
+const UserEdit = ({setMuokkaustila, setIsPositive, setShowMessage, setMessage, muokattavaUser }) => {
 
 //komponentin tilan määritys
-//id-arvo tulee tietokannassa automatic
-const [newFirstName, setNewFirstName] = useState('')
-const [newLastName, setNewLastName] = useState('')
-const [newEmail, setNewEmail] = useState('')
-const [newAccesslevelId, setNewAccesslevelId] = useState(2)
-const [newUsername, setNewUsername] = useState('')
-const [newPassword, setNewPassword] = useState('')
+const [newFirstName, setNewFirstName] = useState(muokattavaUser.firstName)
+const [newLastName, setNewLastName] = useState(muokattavaUser.lastName)
+const [newEmail, setNewEmail] = useState(muokattavaUser.email)
 
+const [newAccesslevelId, setNewAccesslevelId] = useState(muokattavaUser.accesslevelId)
+const [newUsername, setNewUsername] = useState(muokattavaUser.username)
+const [newPassword, setNewPassword] = useState(muokattavaUser.password)
 
 // onSubmit tapahtumankäsittelijä-funktio
 const handleSubmit = (event) => {
   // estää oletusarvoisen käyttäytymisen
   event.preventDefault()
-  // luodaan user-olio, joka poimii stateistä datan
-  var newUser = {    
+  // luodaan customer-olio, joka poimii stateistä datan
+  var newUser = {
     firstName: newFirstName,
     lastName: newLastName,
     email: newEmail,
     accesslevelId: parseInt(newAccesslevelId),
     username: newUsername,
-    password: md5(newPassword) //salataan md5-kirjaston metodilla
+    password: md5(newPassword)
   }
 
-  console.log(newUser)
-
-  // uuden userin lisääminen
-  UserService.create(newUser)
+  // userin muokkaaminen
+  UserService.update(muokattavaUser.userId, newUser)
   .then(response => {
     if (response.status === 200) {
-      setMessage(`Added new User: ${newUser.firstName} ${newUser.lastName}`)
+      setMessage(`Updated User: ${newUser.firstName} ${newUser.lastName}`)
       setIsPositive(true)
       setShowMessage(true)
 
@@ -44,11 +41,12 @@ const handleSubmit = (event) => {
         setShowMessage(false)
       }, 5000)
 
-      setLisäystila(false)
+      setMuokkaustila(false)
+      // yllä oleva pois jos setTimeoutin kautta määritellään setLisäystila falseksi
     }
   })
   .catch(error => {
-    setMessage(error)
+    setMessage(error.message)
     setIsPositive(false)
     setShowMessage(true)
 
@@ -56,14 +54,15 @@ const handleSubmit = (event) => {
       setShowMessage(false)
     }, 6000)
   })
+
 }
 
 
   return (
-    <div id="addNew">        
-        <h2>User add</h2>        
+    <div id="edit">        
+        <h2>User edit</h2>        
 
-        <form onSubmit={handleSubmit}>          
+        <form onSubmit={handleSubmit}>
           <div>
               <label>First Name: </label>
               <input type='text' value={newFirstName} placeholder='First Name'
@@ -80,8 +79,8 @@ const handleSubmit = (event) => {
                   value={newEmail} onChange={({target}) => setNewEmail(target.value)} />
           </div>
           <div>
-              <label>Access Level: </label>
-              <input type='number' placeholder='Access Level'
+              <label>Accesslevel: </label>
+              <input type='number' placeholder='Accesslevel'
                   value={newAccesslevelId} onChange={({target}) => setNewAccesslevelId(target.value)} />
           </div>
           <div>
@@ -97,7 +96,7 @@ const handleSubmit = (event) => {
           
           <input type='submit' value='Save' />
 
-          <input type='button' value='Cancel' onClick={() => setLisäystila(false)} />
+          <input type='button' value='Cancel' onClick={() => setMuokkaustila(false)} />
 
         </form>
 
@@ -105,4 +104,4 @@ const handleSubmit = (event) => {
   )
 }
 
-export default UserAdd
+export default UserEdit
