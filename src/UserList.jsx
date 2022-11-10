@@ -14,7 +14,13 @@ const [reload, reloadNow] = useState(false)
 const [muokattavaUser, setMuokattavaUser] = useState(false)
 const [search, setSearch] = useState("")
 
+// bäkend vaatii tokenin, jotta users-lista saadaan näkyville
 useEffect(() => {
+
+  const token = localStorage.getItem('token')
+        UserService
+              .setToken(token)
+
   UserService.getAll()
   .then(data => {
     setUsers(data)

@@ -1,7 +1,7 @@
 import axios from "axios"
 
 // const baseUrl = "https://localhost:5001/nw/customer"
-const baseUrl = "https://localhost:7284/nw/customer"
+const baseUrl = "https://localhost:7284/nw/products"
 
 let token = null
 
@@ -20,11 +20,11 @@ const getAll = () => {
 }
 
 // uuden asiakkaan lisääminen
-const create = newCustomer => {
+const create = newProduct => {
     const config = {
         headers: { Authorization: token },
     }
-    return axios.post(baseUrl, newCustomer, config)
+    return axios.post(baseUrl, newProduct, config)
 }
 
 const remove = id => {
@@ -38,7 +38,7 @@ const update = object => {
     const config = {
         headers: { Authorization: token },
     }
-    return axios.put(`${baseUrl}/${object.customerId}`, object, config)
+    return axios.put(`${baseUrl}/${object.productId}`, object, config)
 }
 
 export default { getAll, create, remove, update, setToken }

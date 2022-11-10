@@ -16,7 +16,14 @@ const [reload, reloadNow] = useState(false)
 const [muokattavaCustomer, setMuokattavaCustomer] = useState(false)
 const [search, setSearch] = useState("")
 
+// UseEffect ajetaan aina alussa kerran
+// local storagesta token, jotta saadaan customerit näkyviin & päästään niiden CRUD:eihin käsiksi
 useEffect(() => {
+
+  const token = localStorage.getItem('token')
+        CustomerService
+              .setToken(token)
+
   CustomerService.getAll()
   .then(data => {
     setCustomers(data)

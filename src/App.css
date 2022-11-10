@@ -66,6 +66,18 @@
   padding-right: 10%;
 }
 
+.productDetails {
+  background-color: indianred;
+  border-style: solid;
+  width: 95%;
+  margin: auto;
+  margin-bottom: 50px;
+  border-radius: 10px;
+  padding-left: 10%;
+  padding-right: 10%;
+}
+
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
