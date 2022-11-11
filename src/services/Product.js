@@ -19,7 +19,7 @@ const getAll = () => {
     return request.then(response => response.data)
 }
 
-// uuden asiakkaan lisääminen
+// uuden tuotteen lisääminen
 const create = newProduct => {
     const config = {
         headers: { Authorization: token },

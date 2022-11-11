@@ -17,7 +17,7 @@ const [newUnitsInStock, setNewUnitsInStock] = useState('')
 const [newUnitsOnOrder, setNewUnitsOnOrder] = useState('')
 const [newReorderLevel, setNewReorderLevel] = useState('')
 
-const [newDiscontinued, setNewDiscontinued] = useState('')
+const [newDiscontinued, setNewDiscontinued] = useState(false)
 const [newImageLink, setNewImageLink] = useState('')
 
 // onSubmit tapahtumankäsittelijä-funktio
@@ -27,13 +27,13 @@ const handleSubmit = (event) => {
   // luodaan product-olio, joka poimii stateistä datan
   var newProduct = {
     productName: newProductName,
-    supplierID: newSupplierID,
-    categoryID: newCategoryID,
+    supplierID: parseInt(newSupplierID),
+    categoryID: parseInt(newCategoryID),
     quantityPerUnit: newQuantityPerUnit,
-    unitPrice: newUnitPrice,
-    unitsInStock: newUnitsInStock,
-    unitsOnOrder: newUnitsOnOrder,
-    reorderLevel: newReorderLevel,
+    unitPrice: parseInt(newUnitPrice),
+    unitsInStock: parseInt(newUnitsInStock),
+    unitsOnOrder: parseInt(newUnitsOnOrder),
+    reorderLevel: parseInt(newReorderLevel),
     discontinued: newDiscontinued,
     imageLink: newImageLink
   }
@@ -64,7 +64,6 @@ const handleSubmit = (event) => {
     }, 6000)
   })
 }
-
 
   return (
     <div id="addNew">        
@@ -113,8 +112,10 @@ const handleSubmit = (event) => {
           </div>
           <div>
               <label>Discontinued: </label>
-              <input type='text' placeholder='Discontinued'
-                  value={newDiscontinued} onChange={({target}) => setNewDiscontinued(target.value)} required />
+              <input                  
+                  type="radio"
+                  checked={newDiscontinued}
+                  onChange={e => setNewDiscontinued(e.target.checked)} required />
           </div>
           <div>
               <label>Image Link: </label>
