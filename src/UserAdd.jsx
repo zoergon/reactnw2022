@@ -14,13 +14,16 @@ const [newEmail, setNewEmail] = useState('')
 const [newAccesslevelId, setNewAccesslevelId] = useState(2)
 const [newUsername, setNewUsername] = useState('')
 const [newPassword, setNewPassword] = useState('')
+const [confirmPassword, setConfirmPassword] = useState('')
 
 
 // onSubmit tapahtumankäsittelijä-funktio
 const handleSubmit = (event) => {
   // estää oletusarvoisen käyttäytymisen
   event.preventDefault()
-  // luodaan user-olio, joka poimii stateistä datan
+  //vahvistetaan salasanan ja uudelleen syötetyn salasanan vastaavuus
+  if (newPassword === confirmPassword) {
+    // luodaan user-olio, joka poimii stateistä datan
   var newUser = {    
     firstName: newFirstName,
     lastName: newLastName,
@@ -56,6 +59,18 @@ const handleSubmit = (event) => {
       setShowMessage(false)
     }, 6000)
   })
+  }
+  // mikäli salasana ja vahvistus eivät vastaa toisiaan
+  else {
+    setMessage('Vahvista syöttämällä salasana uudelleen.')
+        setIsPositive(true)
+        setShowMessage(true)
+        window.scrollBy(0, -10000) // Scrollaa ylös ruudun
+
+        setTimeout(() => {
+            setShowMessage(false)
+          }, 5000)
+}
 }
 
 
@@ -93,6 +108,11 @@ const handleSubmit = (event) => {
               <label>Password: </label>
               <input type='password' placeholder='Password'
                   value={newPassword} onChange={({target}) => setNewPassword(target.value)} />
+          </div>
+          <div>
+              <label>Confirm Password: </label>
+              <input type='password' placeholder='Confirm Password'
+                  value={confirmPassword} onChange={({target}) => setConfirmPassword(target.value)} />
           </div>
           
           <input type='submit' value='Save' />

@@ -55,7 +55,7 @@ const handleSubmit = (event) => {
     }
   })
   .catch(error => {
-    setMessage(error)
+    setMessage(error.message)
     setIsPositive(false)
     setShowMessage(true)
 

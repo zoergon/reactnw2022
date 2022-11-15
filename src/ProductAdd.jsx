@@ -18,7 +18,7 @@ const [newUnitsOnOrder, setNewUnitsOnOrder] = useState('')
 const [newReorderLevel, setNewReorderLevel] = useState('')
 
 const [newDiscontinued, setNewDiscontinued] = useState(false)
-const [newImageLink, setNewImageLink] = useState('')
+const [newImageLink, setNewImageLink] = useState(null)
 
 // onSubmit tapahtumankäsittelijä-funktio
 const handleSubmit = (event) => {
@@ -30,7 +30,7 @@ const handleSubmit = (event) => {
     supplierID: parseInt(newSupplierID),
     categoryID: parseInt(newCategoryID),
     quantityPerUnit: newQuantityPerUnit,
-    unitPrice: parseInt(newUnitPrice),
+    unitPrice: parseFloat(newUnitPrice),
     unitsInStock: parseInt(newUnitsInStock),
     unitsOnOrder: parseInt(newUnitsOnOrder),
     reorderLevel: parseInt(newReorderLevel),
@@ -92,7 +92,7 @@ const handleSubmit = (event) => {
           </div>
           <div>
               <label>Unit Price: </label>
-              <input type='number' placeholder='Unit Price'
+              <input type='number' step='0.01' placeholder='Unit Price'
                   value={newUnitPrice} onChange={({target}) => setNewUnitPrice(target.value)} />
           </div>
           <div>

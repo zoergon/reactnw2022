@@ -7,9 +7,10 @@ const ProductEdit = ({setMuokkaustila, setIsPositive, setShowMessage, setMessage
 
 //komponentin tilan määritys
 
+const [newProductId, setNewProductId] = useState(muokattavaProduct.productId)
 const [newProductName, setNewProductName] = useState(muokattavaProduct.productName)
-const [newSupplierID, setNewSupplierID] = useState(muokattavaProduct.productName)
-const [newCategoryID, setNewCategoryID] = useState(muokattavaProduct.productName)
+const [newSupplierID, setNewSupplierID] = useState(muokattavaProduct.supplierID)
+const [newCategoryID, setNewCategoryID] = useState(muokattavaProduct.categoryID)
 const [newQuantityPerUnit, setNewQuantityPerUnit] = useState(muokattavaProduct.quantityPerUnit)
 const [newUnitPrice, setNewUnitPrice] = useState(muokattavaProduct.unitPrice)
 
@@ -26,14 +27,15 @@ const handleSubmit = (event) => {
   event.preventDefault()
   // luodaan Product-olio, joka poimii stateistä datan
   var newProduct = {
+    productId: newProductId,
     productName: newProductName,
-    supplierID: newSupplierID,
-    categoryID: newCategoryID,
+    supplierID: parseInt(newSupplierID),
+    categoryID: parseInt(newCategoryID),
     quantityPerUnit: newQuantityPerUnit,
-    unitPrice: newUnitPrice,
-    unitsInStock: newUnitsInStock,
-    unitsOnOrder: newUnitsOnOrder,
-    reorderLevel: newReorderLevel,
+    unitPrice: parseFloat(newUnitPrice),
+    unitsInStock: parseInt(newUnitsInStock),
+    unitsOnOrder: parseInt(newUnitsOnOrder),
+    reorderLevel: parseInt(newReorderLevel),
     discontinued: newDiscontinued,
     imageLink: newImageLink
   }
@@ -55,7 +57,7 @@ const handleSubmit = (event) => {
     }
   })
   .catch(error => {
-    setMessage(error)
+    setMessage(error.message)
     setIsPositive(false)
     setShowMessage(true)
 
@@ -72,19 +74,23 @@ const handleSubmit = (event) => {
         <h2>Product edit</h2>        
 
         <form onSubmit={handleSubmit}>
+        <div>
+            <label>ProductId: </label>
+              <input type='text' value={newProductId} disabled />
+          </div>
           <div>
-              <label>Product Name: </label>
+              <label>ProductName: </label>
               <input type='text' value={newProductName} placeholder='Product Name'
                   onChange={({target}) => setNewProductName(target.value)} required />
           </div>
           <div>
               <label>Supplier ID: </label>
-              <input type='text' value={newSupplierID} placeholder='Supplier ID'
+              <input type='number' value={newSupplierID}
                   onChange={({target}) => setNewSupplierID(target.value)} />
           </div>
           <div>
               <label>Category ID: </label>
-              <input type='text' value={newCategoryID} placeholder='Category ID'
+              <input type='number' value={newCategoryID}
                   onChange={({target}) => setNewCategoryID(target.value)} />
           </div>
           <div>
@@ -94,28 +100,30 @@ const handleSubmit = (event) => {
           </div>
           <div>
               <label>Unit Price: </label>
-              <input type='text' placeholder='Unit Price'
+              <input type='number' step='0.01' placeholder='Unit Price'
                   value={newUnitPrice} onChange={({target}) => setNewUnitPrice(target.value)} />
           </div>
           <div>
               <label>Units In Stock: </label>
-              <input type='text' placeholder='Units In Stock'
+              <input type='number' placeholder='Units In Stock'
                   value={newUnitsInStock} onChange={({target}) => setNewUnitsInStock(target.value)} />
           </div>
           <div>
               <label>Units On Order: </label>
-              <input type='text' placeholder='Units On Order'
+              <input type='number' placeholder='Units On Order'
                   value={newUnitsOnOrder} onChange={({target}) => setNewUnitsOnOrder(target.value)} />
           </div>
           <div>
               <label>Reorder Level: </label>
-              <input type='text' placeholder='Reorder Level'
+              <input type='number' placeholder='Reorder Level'
                   value={newReorderLevel} onChange={({target}) => setNewReorderLevel(target.value)} />
           </div>
           <div>
               <label>Discontinued: </label>
-              <input type='text' placeholder='Discontinued'
-                  value={newDiscontinued} onChange={({target}) => setNewDiscontinued(target.value)} required />
+              <input                  
+                  type="radio"
+                  checked={newDiscontinued}
+                  onChange={e => setNewDiscontinued(e.target.checked)} required />
           </div>
           <div>
               <label>Image Link: </label>
