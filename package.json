@@ -2,7 +2,8 @@
   "name": "reactnw2022",
   "version": "0.1.0",
   "engines": {
-    "node": "16.x"
+    "node": "16.x",
+    "npm": "6.14.4"
   },
   "private": true,
   "dependencies": {
